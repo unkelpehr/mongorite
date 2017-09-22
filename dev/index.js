@@ -2,8 +2,8 @@
 
 const {Database, Collection, Document} = require('../index');
 
-const TestDocument = require('./TestDocument');
-const TestCollection = require('./TestCollection');
+const UserDocument = require('./UserDocument');
+const UserCollection = require('./UserCollection');
 
 const inspect = (obj, depth) => {
 	console.log(require('util').inspect(obj, {colors: true, breakLength: 0, depth: depth}));
@@ -11,21 +11,21 @@ const inspect = (obj, depth) => {
 
 const db = new Database('localhost/mongorite_test');
 
-function doStuff () {
-	var tests = new TestCollection(db);
+function tests () {
+	var users = new UserCollection(db);
 
-	tests.push({
-		foo: 'bar',
-		bar: 5
+	users.push({
+		first_name: 'Flash',
+		last_name: 'Gordon'
 	});
 
-	inspect(tests);
-	
-	return tests.save();
+	inspect(users);
+
+	return users.save();
 }
 
 db.connect()
-.then(() => doStuff())
+.then(() => tests())
 .then(() => db.disconnect())
 .catch(err => {
 	console.log('Unhandled Promise Rejection', err);
