@@ -13,12 +13,12 @@
     "ajv": "^5.2.2",
     "bluebird": "^3.5.0",
     "deep-extend": "^0.5.0",
+    "dot-prop": "^4.2.0",
     "mongodb": "^2.2.31",
     "mquery": "^2.3.1",
     "node-object-hash": "^1.3.0",
     "pluralize": "^7.0.0"
   },
-
   "devDependencies": {
     "ava": "^0.22.0"
   },
@@ -27,7 +27,7 @@
     "test:watch": "ava --watch",
     "test:watch:verbose": "ava --watch --verbose"
   },
-"ava": {
+  "ava": {
     "failFast": true,
     "files": [
       "test/*.js"
