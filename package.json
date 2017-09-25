@@ -1,8 +1,7 @@
 {
-  "private": true,
   "name": "mongorite",
   "description": "MongoDB ODM",
-  "version": "v0.0.1",
+  "version": "v0.0.2",
   "author": "Pehr Boman <unkelpehr@gmail.com>",
   "homepage": "https://github.com/unkelpehr/mongorite",
   "license": "MIT",
