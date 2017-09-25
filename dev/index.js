@@ -1,6 +1,5 @@
 'use strict';
-
-const {Database, Collection, Document} = require('../index');
+const {Database, Collection, Document, plugins} = require('../index');
 
 const UserDocument = require('./UserDocument');
 const UserCollection = require('./UserCollection');
@@ -11,7 +10,10 @@ const inspect = (obj, depth) => {
 
 const db = new Database('localhost/mongorite_test');
 
-function tests () {
+//Collection.use(plugins.runtime);
+Collection.use(plugins.schemas);
+
+async function tests () {
 	var users = new UserCollection(db);
 
 	users.push({
@@ -19,9 +21,10 @@ function tests () {
 		last_name: 'Gordon'
 	});
 
-	inspect(users);
-
-	return users.save();
+	console.time('save');
+	const res = await users.save();
+	//inspect(res.runtime);
+	console.timeEnd('save');
 }
 
 db.connect()
@@ -31,3 +34,10 @@ db.connect()
 	console.log('Unhandled Promise Rejection', err);
 	process.exit();
 });
+
+class Schema {
+	validate () {
+
+	}
+}
+

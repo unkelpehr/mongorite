@@ -5,7 +5,7 @@ const schema =  require('./UserSchema');
 
 class UserDocument extends Document {
 	configure () {
-		//this.schema(schema.schema, schema.options);
+		this.schema(schema.schema, schema.options);
 	}
 }
 
