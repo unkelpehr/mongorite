@@ -32,6 +32,7 @@ test('prototype methods expectations', assert => {
 		'save',
 		'refresh',
 		'get',
+		'set',
 		'validate',
 		'inspect',
 		'clone',
