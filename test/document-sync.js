@@ -4,8 +4,6 @@ const {Database, Collection, Document} = require('../');
 test('prototype methods expectations', assert => {
 	const expect = [
 		'constructor',
-		'schema',
-		'validate',
 		'set',
 		'get',
 		'refresh',
@@ -29,6 +27,7 @@ test('should throw when constructor is given something other than an instance of
 	assert.notThrows(() => new Document(new Collection()));
 });
 
+/*
 test('prototype.schema - no collection', assert => {
 	let document = new Document();
 	let schema = {foo: 'bar', bleh: {foo: 'koo'}};
@@ -156,6 +155,7 @@ test('prototype.validate - with collection, after schema', assert => {
 	document.schema(null, {allErrors: false});
 	assert.is(document.set({val1: 100, val2: '100'}).validate().length, 1);
 });
+*/
 
 test('prototype.set, prototype.get', assert => {
 	let document = new Document();

@@ -33,7 +33,6 @@ test('prototype methods expectations', assert => {
 		'refresh',
 		'get',
 		'set',
-		'validate',
 		'inspect',
 		'clone',
 		'pop',
@@ -46,8 +45,7 @@ test('prototype methods expectations', assert => {
 		'toArray',
 		'slice',
 		'query',
-		'Document',
-		'db'
+		'Document'
 	].sort();
 
 	assert.deepEqual(expect, Object.getOwnPropertyNames(Collection.prototype).sort());

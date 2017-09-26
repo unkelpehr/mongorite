@@ -4,8 +4,8 @@ const {Database, Collection, Document} = require('../index');
 const UserDocument = require('./UserDocument');
 
 class UserCollection extends Collection {
-	configure () {
-		this.Document = UserDocument;
+	get Document () {
+		return UserDocument;
 	}
 }
 

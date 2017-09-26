@@ -13,6 +13,9 @@ const db = new Database('localhost/mongorite_test');
 //Collection.use(plugins.runtime);
 Collection.use(plugins.schemas);
 
+
+var users = new UserCollection(db);
+
 async function tests () {
 	var users = new UserCollection(db);
 

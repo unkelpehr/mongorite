@@ -5,8 +5,8 @@ const db = new Database('localhost/mongorite_test');
 
 class TestDocument extends Document {}
 class TestCollection extends Collection {
-	configure () {
-		this.Document = TestDocument;
+	get Document () {
+		return TestDocument;
 	}
 }
 
