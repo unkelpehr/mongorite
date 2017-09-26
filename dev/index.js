@@ -1,5 +1,5 @@
 'use strict';
-const {Database, Collection, Document, plugins} = require('../index');
+const {Database, Collection, Document, plugins, ObjectId} = require('../index');
 
 const UserDocument = require('./UserDocument');
 const UserCollection = require('./UserCollection');
@@ -10,24 +10,27 @@ const inspect = (obj, depth) => {
 
 const db = new Database('localhost/mongorite_test');
 
-//Collection.use(plugins.runtime);
-Collection.use(plugins.schemas);
+Collection.use(plugins.runtime);
+Collection.use(plugins.schemas({allErrors: true}));
 
 
 var users = new UserCollection(db);
 
 async function tests () {
-	var users = new UserCollection(db);
 
-	users.push({
-		first_name: 'Flash',
-		last_name: 'Gordon'
-	});
+	console.time('find');
 
-	console.time('save');
-	const res = await users.save();
-	//inspect(res.runtime);
-	console.timeEnd('save');
+	users = await users.query.find({}).limit(10000);
+	inspect(users.runtime);
+
+	console.timeEnd('find');
+
+	return;
+	users.push({first_name: 'df', last_name: 'd'});
+
+	console.time('validate');
+	inspect(users.validate());
+	console.timeEnd('validate');
 }
 
 db.connect()
@@ -37,10 +40,3 @@ db.connect()
 	console.log('Unhandled Promise Rejection', err);
 	process.exit();
 });
-
-class Schema {
-	validate () {
-
-	}
-}
-

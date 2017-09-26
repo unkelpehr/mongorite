@@ -1,10 +1,10 @@
 'use strict';
 
-const {Database, Collection, Document} = require('../index');
+const {Collection, Document} = require('../index');
 const UserDocument = require('./UserDocument');
 
 class UserCollection extends Collection {
-	get Document () {
+	static get Document () {
 		return UserDocument;
 	}
 }

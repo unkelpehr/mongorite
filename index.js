@@ -1,5 +1,7 @@
 'use strict';
 
+const mongodb = require('mongodb');
+
 exports.Promise = require('bluebird');
 
 exports.Database = require('./lib/Database');
@@ -10,3 +12,7 @@ exports.plugins = {
 	runtime: require('./lib/plugins/runtime'),
 	schemas: require('./lib/plugins/schemas')
 };
+
+['ObjectId', 'Timestamp'].forEach(prop => {
+	exports[prop] = mongodb[prop];
+});

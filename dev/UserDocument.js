@@ -4,8 +4,8 @@ const {Database, Collection, Document} = require('../index');
 const schema =  require('./UserSchema');
 
 class UserDocument extends Document {
-	configure () {
-		this.schema(schema.schema, schema.options);
+	static get schema () {
+		return schema;
 	}
 }
 
