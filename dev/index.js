@@ -18,23 +18,18 @@ var users = new UserCollection(db);
 
 async function tests () {
 
-	console.time('find');
+	//const res = await users.query.where("local.email").equals('sdfsdf').find(); 
+	//inspect(res);
+	//return;
+	// console.time('find');
+	// users = await users.query.find({}).limit(10000);
+	// inspect(users.runtime);
+	// console.timeEnd('find');
 
-	users = await users.query.find({}).limit(10000);
-	inspect(users.runtime);
-
-	console.timeEnd('find');
-
-	return;
-	users.push({first_name: 'df', last_name: 'd'});
-
-	console.time('validate');
-	inspect(users.validate());
-	console.timeEnd('validate');
 }
 
 db.connect()
-.then(() => tests())
+.then(() => tests().catch(err => {}))
 .then(() => db.disconnect())
 .catch(err => {
 	console.log('Unhandled Promise Rejection', err);
