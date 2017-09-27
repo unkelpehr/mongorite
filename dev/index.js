@@ -11,27 +11,23 @@ const inspect = (obj, depth) => {
 const db = new Database('localhost/mongorite_test');
 
 Collection.use(plugins.runtime);
-Collection.use(plugins.schemas({allErrors: true}));
+Collection.use(plugins.schemas({allErrors: true, validateOnSave: true}));
 
 
 var users = new UserCollection(db);
 
 async function tests () {
+	await db.connect();
+	const user = users.push({first_name: ''})[0];
 
-	//const res = await users.query.where("local.email").equals('sdfsdf').find(); 
-	//inspect(res);
-	//return;
-	// console.time('find');
-	// users = await users.query.find({}).limit(10000);
-	// inspect(users.runtime);
-	// console.timeEnd('find');
+	await users.save();
+	//console.log(res);
 
+	await db.disconnect();
 }
 
-db.connect()
-.then(() => tests().catch(err => {}))
-.then(() => db.disconnect())
-.catch(err => {
-	console.log('Unhandled Promise Rejection', err);
+tests().catch(err => {
+	console.log('Unhandled Promise Rejection');
+	inspect(err);
 	process.exit();
-});
+})
