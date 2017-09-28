@@ -10,6 +10,10 @@ class UserDocument extends Document {
 	//	return this.constructor.validate(this);
 	//}
 
+    setLastName (newName) {
+        return this.set('last_name', newName);
+    }
+
 	static get schema () {
 		return {
             type: 'object',

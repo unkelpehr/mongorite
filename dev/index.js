@@ -11,49 +11,30 @@ const inspect = (obj, depth) => {
 
 const db = new Database('localhost/mongorite_test');
 
-//Collection.use(plugins.runtime);
+Collection.use(plugins.runtime);
 //Collection.use(plugins.schemas({allErrors: true, before: 'save'}));
 
-
-var users = new UserCollection(db);
-
-UserCollection.before('save', e => {
-	console.log('before save');
-}).after('save', e => {
-	console.log('after save');
-}).before('bulkSave', e => {
-	console.log('before bulkSave');
-}).after('bulkSave', e => {
-	console.log('after bulkSave....');
-
-	return new Promise((resolve, reject) => {
-		setTimeout(() =>{
-			console.log('after bulkSave....!');
-			resolve();
-		}, 500)
-	});
+UserCollection.before('find, save', e => {
+	console.log('before', e.name);
+}).after('find, save', e => {
+	console.log('after', e.name, e);
 });
 
-
-console.time('loop');
-users.action('save, bulkSave', {foo:'bar'}, e => {
-	
-}).then(() => {
-	console.timeEnd('loop');
-	//console.log('All done', counts);
-});
-
-return;
 async function tests () {
 	await db.connect();
 
-	const user = await users.query.findById('59c96feac83e6c65a039d03c');
+	const users = new UserCollection(db);
+	
+	inspect(await users.query.find({}).limit(2));
+	//users.push({
+	//	first_name: 'Flash',
+	//	last_name: 'Gordon-' + Math.random()
+	//});
 
-	user.set('last_name', 'Gordon2');
+	//inspect(await users.save());
 
-	console.log(user.get('last_name'))
-	inspect(user);
 
+	//inspect(await users.refresh());
 
 	await db.disconnect();
 }
@@ -63,6 +44,9 @@ tests().catch(err => {
 	inspect(err);
 	process.exit();
 });
+
+return;
+
 
 /*
 const counts = {
