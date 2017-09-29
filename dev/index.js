@@ -11,11 +11,12 @@ const inspect = (obj, depth) => {
 
 const db = new Database('localhost/mongorite_test');
 
-Collection.use(plugins.runtime);
-Collection.use(plugins.schemas({allErrors: true, before: 'save'}));
+//Collection.use(plugins.runtime);
+//Collection.use(plugins.schemas({allErrors: true, before: 'save'}));
 
 UserCollection.before('find, save', e => {
 	console.log('before', e.name);
+	inspect({ops: e.data._operations})
 }).after('find, save', e => {
 	console.log('after', e.name);
 });
@@ -25,12 +26,24 @@ async function tests () {
 
 	const users = new UserCollection(db);
 
-	var res = await users.query.all().limit(1000);
-	inspect(res.runtime);
+	var user = new UserDocument(users);
 
-	console.time('validate');
-	inspect(res.validate());
-	console.timeEnd('validate');
+	user.set({
+		names: {
+			first: 'Anders',
+			last: 'Billfors'
+		}
+	});
+
+	await user.save();
+	await user.refresh();
+
+	user.set('names.last', 'Snigelfors');
+
+	await user.save();
+	await user.refresh();
+
+	inspect(user.get())
 
 	await db.disconnect();
 }
