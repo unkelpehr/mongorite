@@ -20,6 +20,40 @@ UserCollection.before('find, save', e => {
 	console.log('after', e.name);
 });
 
+function clone (obj, target) {
+	for(var key in obj) {
+		if (obj.hasOwnProperty(key)) {
+			target[key] = (typeof obj[key] === 'object') ? clone(obj[key].constructor(), obj[key]) : obj[key];
+		}
+	}
+
+	return target;
+}
+
+return (function () {
+	const doc = new Document();
+	const obj = {
+		k1: 'v1',
+		k2: {},
+		k3: {
+			l1k1: {
+				l2k1: 'l2v1'
+			}
+		},
+		k4: {
+			l1k1: {
+				l2k1: 'l2v1',
+				l2k2: 'l2v2'
+			}
+		}
+	};
+
+	doc.set(obj);
+
+	inspect(doc.get.dotted('k4.l1k1'));
+}());
+
+
 async function tests () {
 	await db.connect();
 
@@ -40,6 +74,7 @@ async function tests () {
 			}
 		}
 	});
+
 	user.set({
 		something: {
 			really: {
@@ -53,6 +88,7 @@ async function tests () {
 			}
 		}
 	})
+
 	var res = await user.save();
 
 	user.set({
@@ -76,9 +112,6 @@ async function tests () {
 
 	inspect(user);
 
-	await db.disconnect();
-
-	return;
 	await user.save();
 	await user.refresh();
 
