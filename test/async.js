@@ -62,17 +62,17 @@ test('Collection.prototype.set / save / find', async assert => {
 
 	let test = await tests.query.findOne({first_name: object.first_name});
 
-	assert.truthy(object._id === undefined);
-	assert.is(test.first_name, test.first_name);
-	assert.is(test.last_name, test.last_name);
+	assert.truthy(object._id === undefined); // Make sure the original object isn't modified
+	assert.is(test.get('first_name'), object.first_name);
+	assert.is(test.get('last_name'), object.last_name);
 
 	await test.set('last_name', 'random').set({username: 'bleh', hooblah: 'something'}).save();
 
 	test = await tests.query.findOne({first_name: object.first_name});
 
-	delete test.data._id;
+	test.unset(true, true, '_id');
 
-	assert.deepEqual(test.data, {
+	assert.deepEqual(test.get(), {
 		first_name: 'skurt',
 		last_name: 'random',
 		username: 'bleh',

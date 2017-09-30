@@ -28,35 +28,38 @@ test('should not have any enumerable properties', assert => {
 
 test('prototype methods expectations', assert => {
 	const expect = [
-		'constructor',
-		'save',
-		'refresh',
-		'get',
-		'set',
-		'inspect',
+		'Document',
 		'clone',
-		'pop',
-		'shift',
-		'push',
-		'forEach',
+		'constructor',
 		'each',
-		'map',
 		'filter',
-		'toArray',
-		'slice',
+		'forEach',
+		'get',
+		'inspect',
+		'map',
+		'mongo',
+		'pop',
+		'push',
 		'query',
-		'Document'
+		'refresh',
+		'save',
+		'set',
+		'shift',
+		'slice',
+		'toArray'
 	].sort();
 
 	assert.deepEqual(expect, Object.getOwnPropertyNames(Collection.prototype).sort());
 });
 
+/*
 test('should throw when constructor is given something other than mongodb', assert => {
 	assert.throws(() => new Collection(null));
 	assert.throws(() => new Collection({}));
 	assert.throws(() => new Collection(0));
 	assert.notThrows(() => new Collection(new Database()));
 });
+*/
 
 test('prototype.clone', assert => {
 	let database = new Database(),
@@ -128,16 +131,16 @@ test('prototype.pop', assert => {
 
 	collection.push(object1, object2, object3, object4);
 
-	assert.is(collection.pop().changes.a, 4);
+	assert.is(collection.pop().changes().a, 4);
 	assert.is(collection.length, 3);
 
-	assert.is(collection.pop().changes.a, 3);
+	assert.is(collection.pop().changes().a, 3);
 	assert.is(collection.length, 2);
 
-	assert.is(collection.pop().changes.a, 2);
+	assert.is(collection.pop().changes().a, 2);
 	assert.is(collection.length, 1);
 
-	assert.is(collection.pop().changes.a, 1);
+	assert.is(collection.pop().changes().a, 1);
 	assert.is(collection.length, 0);
 
 	assert.is(collection.pop(), undefined);
@@ -156,16 +159,16 @@ test('prototype.shift', assert => {
 
 	collection.push(object1, object2, object3, object4);
 
-	assert.is(collection.shift().changes.a, 1);
+	assert.is(collection.shift().changes().a, 1);
 	assert.is(collection.length, 3);
 
-	assert.is(collection.shift().changes.a, 2);
+	assert.is(collection.shift().changes().a, 2);
 	assert.is(collection.length, 2);
 
-	assert.is(collection.shift().changes.a, 3);
+	assert.is(collection.shift().changes().a, 3);
 	assert.is(collection.length, 1);
 
-	assert.is(collection.shift().changes.a, 4);
+	assert.is(collection.shift().changes().a, 4);
 	assert.is(collection.length, 0);
 
 	assert.is(collection.shift(), undefined);
@@ -182,7 +185,7 @@ test('prototype.forEach', assert => {
 
 	collection.push(objects).forEach((doc, index, self) => {
 		count++;
-		assert.is(doc.changes.a, count);
+		assert.is(doc.changes().a, count);
 		assert.is(index, count - 1);
 		assert.truthy(collection === self);
 	});
@@ -197,7 +200,7 @@ test('prototype.each', assert => {
 
 	collection.push(objects).each((doc, index, self) => {
 		count++;
-		assert.is(doc.changes.a, count);
+		assert.is(doc.changes().a, count);
 		assert.is(index, count - 1);
 		assert.truthy(collection === self);
 	});
@@ -214,11 +217,11 @@ test('prototype.map', assert => {
 
 test('prototype.filter', assert => {
 	let collection1 = (new Collection()).push([{a:1}, {a:2}, {a:3}, {a:4}]),
-		collection2 = collection1.filter(doc => (doc.changes.a === 1 || doc.changes.a === 4));
+		collection2 = collection1.filter(doc => (doc.changes().a === 1 || doc.changes().a === 4));
 
 	assert.is(collection2.length, 2);
-	assert.is(collection2[0].changes.a, 1);
-	assert.is(collection2[1].changes.a, 4);
+	assert.is(collection2[0].changes().a, 1);
+	assert.is(collection2[1].changes().a, 4);
 });
 
 test('prototype.toArray', assert => {
@@ -250,7 +253,7 @@ test('prototype.slice', assert => {
 	collection2 = collection1.slice(1);
 	assert.is(collection2.length, 3);
 
-	assert.is(collection1.slice(0, 1)[0].changes.a, 1);
+	assert.is(collection1.slice(0, 1)[0].changes().a, 1);
 	assert.truthy(collection1.slice(0, 1)[0] instanceof Document);
 
 	assert.is(collection1.length, 4);

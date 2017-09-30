@@ -16,7 +16,6 @@ const db = new Database('localhost/mongorite_test');
 
 UserCollection.before('find, save', e => {
 	console.log('before', e.name);
-	inspect({ops: e.data._operations})
 }).after('find, save', e => {
 	console.log('after', e.name);
 });
@@ -31,20 +30,63 @@ async function tests () {
 	user.set({
 		names: {
 			first: 'Anders',
-			last: 'Billfors'
+			last: 'Billfors',
+			nick: 'Moneybrother'
+		},
+
+		something: {
+			really: {
+				really: 'deep'
+			}
 		}
 	});
+	user.set({
+		something: {
+			really: {
+				reaaally: {
+					reaaaaaaalllyy: 'deeeeep'
+				}
+			},
 
-	await user.save();
-	await user.refresh();
+			else: {
+				que: 'pasa'
+			}
+		}
+	})
+	var res = await user.save();
+
+	user.set({
+		something: {
+			else: {
+				que: 'not pasa'
+			}
+		}
+	})
 
 	user.set('names.last', 'Snigelfors');
+	user.set({
+		team: 'Verksamhetsutveckling'
+	});
 
+	user.unset('names.first');
+	user.unset(true, 'names.last');
+	user.unset(true, true, 'names.nick');
+
+	user.unset(true, true, 'something.else');
+
+	inspect(user);
+
+	await db.disconnect();
+
+	return;
 	await user.save();
 	await user.refresh();
 
-	inspect(user.get())
+	user.set('something.really.reaaally.reaaaaaaalllyy', 'superdeep!');
+	
+	// inspect(user);
 
+	inspect(user.get.dotted('something.really.reaaally.reaaaaaaalllyy'))
 	await db.disconnect();
 }
 
