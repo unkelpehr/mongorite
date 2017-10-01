@@ -32,25 +32,10 @@ function clone (obj, target) {
 
 return (function () {
 	const doc = new Document();
-	const obj = {
-		k1: 'v1',
-		k2: {},
-		k3: {
-			l1k1: {
-				l2k1: 'l2v1'
-			}
-		},
-		k4: {
-			l1k1: {
-				l2k1: 'l2v1',
-				l2k2: 'l2v2'
-			}
-		}
-	};
 
-	doc.set(obj);
-
-	inspect(doc.get.dotted('k4.l1k1'));
+	doc.set('foo', 'bar').unset.change('foo');
+	
+	inspect(doc.get());
 }());
 
 
