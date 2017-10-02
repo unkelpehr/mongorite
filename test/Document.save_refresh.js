@@ -59,10 +59,6 @@ test('save multidimensional object', async assert => {
 	doc.set('k3.l1k1.lol', 'whut');
 	await doc.save();
 
-	inspect({
-		obj1,
-		fuk: doc.get(false)
-	})
 	assert.deepEqual(doc.get(false), obj1);
 });
 

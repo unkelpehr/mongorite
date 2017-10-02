@@ -1,6 +1,6 @@
 'use strict';
 
-const {Database, Collection, Document, plugins, ObjectId, Promise} = require('../index');
+const {Database, Collection, Document, plugins, ObjectId, Promise, common} = require('../index');
 
 const UserDocument = require('./UserDocument');
 const UserCollection = require('./UserCollection');
@@ -30,6 +30,9 @@ function clone (obj, target) {
 	return target;
 }
 
+inspect(common.merge(true, 'foo'));
+
+return;
 return (async function () {
 	const col = new UserCollection(db);
 	const doc = new UserDocument(col);
