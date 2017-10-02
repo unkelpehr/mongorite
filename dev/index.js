@@ -15,9 +15,9 @@ const db = new Database('localhost/mongorite_test');
 //Collection.use(plugins.schemas({allErrors: true, before: 'save'}));
 
 UserCollection.before('find, save', e => {
-	console.log('before', e.name);
+	//console.log('before', e.name);
 }).after('find, save', e => {
-	console.log('after', e.name);
+	//console.log('after', e.name);
 });
 
 function clone (obj, target) {
@@ -30,12 +30,32 @@ function clone (obj, target) {
 	return target;
 }
 
-return (function () {
-	const doc = new Document();
+return (async function () {
+	const col = new UserCollection(db);
+	const doc = new UserDocument(col);
 
-	doc.set('foo', 'bar').unset.change('foo');
-	
-	inspect(doc.get());
+	await db.connect();
+
+	const obj1 = {
+		root: {
+			val1: 'val1'
+		}
+	};
+
+	doc.set(obj1)
+	await doc.save();
+	doc.set('root.val2', 'whut');
+	inspect({
+		dotted: doc.dataDotted,
+		nested: doc.dataNested
+	})
+	return db.disconnect();
+	inspect(doc)
+
+	//await doc.save();
+
+	//inspect(doc)
+	await db.disconnect();
 }());
 
 

@@ -1,7 +1,6 @@
 const {test} = require('ava');
 const {Database, Collection, Document} = require('../');
 
-
 test('getConnection returns a mongodb connection when already connected', async assert => {
 	const db = new Database('localhost/mongorite_test');
 

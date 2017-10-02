@@ -9,7 +9,6 @@ test('prototype methods expectations', assert => {
 		  'constructor',
 		  'get',
 		  'inspect',
-		  'isChanged',
 		  'isDirty',
 		  'isSaved',
 		  'refresh',
