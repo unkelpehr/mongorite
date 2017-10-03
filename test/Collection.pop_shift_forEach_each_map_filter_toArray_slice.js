@@ -1,126 +1,18 @@
 const {test} = require('ava');
 const {Database, Collection, Document} = require('../');
 
-test('instantiation', assert => {
-	assert.notThrows(() => new Collection());
-});
+const db = new Database('localhost/mongorite_test_Collection_pop_shift_forEach_each_map_filter_toArray_slice');
 
-test('name resolution', assert => {
-	class UsersCollection extends Collection {}
-	class UserCollection extends Collection {}
-	class userscollection extends Collection {}
-	class Users extends Collection {}
+class TestDocument extends Document {}
+class TestCollection extends Collection {
+	get Document () {
+		return TestDocument;
+	}
+}
 
-	const test1 = new UsersCollection();
-	const test2 = new UserCollection();
-	const test3 = new userscollection();
-	const test4 = new Users();
-
-	assert.is(test1.name, 'users');
-	assert.is(test2.name, 'users');
-	assert.is(test3.name, 'users');
-	assert.is(test4.name, 'users');
-});
-
-test('should not have any enumerable properties', assert => {
-	assert.deepEqual(Object.keys(new Collection()), []);
-});
-
-test('prototype methods expectations', assert => {
-	const expect = [
-		'Document',
-		'clone',
-		'constructor',
-		'each',
-		'filter',
-		'forEach',
-		'get',
-		'inspect',
-		'map',
-		'mongo',
-		'pop',
-		'push',
-		'query',
-		'refresh',
-		'save',
-		'set',
-		'shift',
-		'slice',
-		'toArray'
-	].sort();
-
-	assert.deepEqual(expect, Object.getOwnPropertyNames(Collection.prototype).sort());
-});
-
-/*
-test('should throw when constructor is given something other than mongodb', assert => {
-	assert.throws(() => new Collection(null));
-	assert.throws(() => new Collection({}));
-	assert.throws(() => new Collection(0));
-	assert.notThrows(() => new Collection(new Database()));
-});
-*/
-
-test('prototype.clone', assert => {
-	let database = new Database(),
-		collection1 = new Collection(database),
-		collection2;
-	
-	collection1.a = 'abc';
-	collection1.b = '';
-	collection1.c = 0;
-	collection1.d = false;
-	collection1.e = null;
-	collection1.f = undefined;
-	collection1.g = {};
-	collection1.h = {foo: 'bar'};
-	collection1.i = {foo: {bar: 'bar'}};
-	collection1.j = function bleh () {};
-
-	collection2 = collection1.clone();
-	
-	assert.deepEqual(collection1, collection2);
-});
-
-test('prototype.push', assert => {
-	let collection = new Collection();
-
-	assert.is(collection.length, 0);
-
-	collection.push({});
-	collection.push({});
-	collection.push({});
-	collection.push({});
-
-	assert.is(collection.length, 4);
-});
-
-test('prototype.push', assert => {
-	let collection = new Collection();
-
-	assert.is(collection.length, 0);
-	collection.push({});
-	assert.is(collection.length, 1);
-
-	collection.push({});
-	assert.is(collection.length, 2);
-
-	collection.push({}, {});
-	assert.is(collection.length, 4);
-
-	collection.push([{}, {}]);
-	assert.is(collection.length, 6);
-
-	collection.push([{}, {}], {}, [{}]);
-	assert.is(collection.length, 10);
-});
-
-
-test('prototype.push converts objects to documents', assert => {
-	let collection = new Collection();
-	collection.push({});
-	assert.truthy(collection[0] instanceof Document);
-});
+const inspect = (obj, depth) => {
+	console.log(require('util').inspect(obj, {colors: true, breakLength: 0, depth: depth}));
+};
 
 test('prototype.pop', assert => {
 	let collection = new Collection(),

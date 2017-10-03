@@ -1,7 +1,7 @@
 const {test} = require('ava');
 const {Database, Collection, Document} = require('../');
 
-const db = new Database('localhost/mongorite_test_Document_save_refresh');
+const db = new Database('localhost/mongorite_test_Collection_save');
 
 class TestDocument extends Document {}
 class TestCollection extends Collection {
@@ -48,51 +48,34 @@ function getTestData () {
 // This runs before all tests
 test.before(() => db.connect());
 
-// This runs after each test
-// test.afterEach.always(() => );
-
 // This runs after all tests
 test.after.always(() => (new TestCollection(db)).query.remove().then(() => db.disconnect()));
 
-test('save multidimensional object', async assert => {
-	const col = new TestCollection(db);
-	const doc = new Document(col);
+test('Save simple object', async assert => {
+	let tests = new TestCollection(db);
 
-	const obj1 = {
-		k1: 'v1',
-		k2: {},
-		k3: {
-			l1k1: {
-				l2k1: 'l2v1'
-			}
-		},
-		k4: {
-			l1k1: {
-				l2k1: 'l2v1',
-				l2k2: 'l2v2'
-			}
-		}
-	};
+	await tests.push({fooX: 1}).save();
+	assert.is(await tests.query.count().where('fooX').in([1]), 1);
 
-	// deepEqual with 'obj1' after insertion and refresh
-	await doc.set(obj1).save();
-	obj1._id = doc.get('_id');
-	await doc.refresh();
-	assert.deepEqual(doc.get(false), obj1);
+	await tests.push({fooX: 2}).save();
+	assert.is(await tests.query.count().where('fooX').in([1,2]), 2);
 
-	// deepEqual after update of nested prop
-	obj1.k3.l1k1.l2k1 = 'something else';
-	doc.set('k3.l1k1.l2k1', 'something else')
-	await doc.save();
-	assert.deepEqual(doc.get(false), obj1);
+	await tests.push({fooX: 3}, {fooX: 4}).save();
+	assert.is(await tests.query.count().where('fooX').in([1,2,3,4]), 4);
 
-	obj1.k3.l1k1.lol = 'whut';
-	doc.set('k3.l1k1.lol', 'whut');
-	await doc.save();
-
-	assert.deepEqual(doc.get(false), obj1);
+	await tests.push([{fooX: 5}, {fooX: 6}]).save();
+	assert.is(await tests.query.count().where('fooX').in([1,2,3,4,5,6]), 6);
 });
 
+test('Save complex object', async assert => {
+	const col = new TestCollection(db);
+	const obj = getTestData();
+	const _id = (await col.push(obj).save()).insertedIds[0];
+	
+	obj._id = _id;
+
+	assert.deepEqual(col[0].get(), obj);
+});
 
 test('Partial update of complex object', async assert => {
 	const col = new TestCollection(db);
@@ -114,28 +97,7 @@ test('Partial update of complex object', async assert => {
 	doc.set('u', undefined);
 	doc.set('w.z._', 0);
 
-	await doc.save();
+	await col.save();
 	
 	assert.deepEqual(doc.get(), obj);
-});
-
-test('refresh', async assert => {
-	const col = new TestCollection(db);
-	const doc1 = new Document(col);
-
-	await doc1.set({
-		first_name: 'skurt',
-		last_name: 'hornberg'
-	}).save();
-
-	const doc2 = await col.query.findById(doc1.get('_id'));
-
-	await doc1.set('first_name', 'not_skurt').save();
-	
-	await doc2.refresh();
-
-	assert.is(
-		doc1.get(false, 'first_name'),
-		doc2.get(false, 'first_name')
-	);
 });
