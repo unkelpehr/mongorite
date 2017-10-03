@@ -11,6 +11,7 @@ test('prototype methods expectations', assert => {
 		  'inspect',
 		  'isDirty',
 		  'isSaved',
+		  'merge',
 		  'refresh',
 		  'reindex',
 		  'save',
