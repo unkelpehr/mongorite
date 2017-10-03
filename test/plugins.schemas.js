@@ -1,5 +1,5 @@
 const {test} = require('ava');
-const {Database, Collection, Document} = require('../');
+const {Database, Collection, Document, plugins} = require('../');
 
 const db = new Database('localhost/mongorite_test_Collection_refresh');
 
@@ -9,6 +9,7 @@ class TestCollection extends Collection {
 		return TestDocument;
 	}
 }
+
 
 const inspect = (obj, depth) => {
 	console.log(require('util').inspect(obj, {colors: true, breakLength: 0, depth: depth}));
