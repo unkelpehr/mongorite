@@ -14,6 +14,7 @@ test('prototype methods expectations', assert => {
 		  'refresh',
 		  'save',
 		  'set',
+		  'set2',
 		  'unset',
 		  'CONST'
 	].sort();

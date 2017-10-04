@@ -80,6 +80,110 @@ const data = {
 	}
 };
 
+function hide (obj, key, val) {
+	Object.defineProperty(obj, key, {
+		enumerable: false,
+		configurable: true,
+		writable: true,
+		value: val
+	});
+
+	return obj;
+}
+
+return (function () {
+	const doc = new Document();
+
+	doc.set(data);
+
+	inspect(doc.get());
+}());
+
+return (function () {
+	const Benchmark = require('Benchmark');
+	const suite = new Benchmark.Suite;
+	 
+	suite.add('set();', function() {
+		user.set(data);
+	});
+
+	suite.add('set2()', function() {
+		user.set2(data);
+	});
+
+	suite.on('cycle', function(event) {
+		console.log(String(event.target));
+	}).on('complete', function() {
+		console.log('Fastest is ' + this.filter('fastest').map('name'));
+	});
+	
+	suite.run({ 'async': true });
+}());
+
+ (function () {
+	const target = {};
+	const source = {
+		a: 'b',
+		c: {
+			d: 'e'
+		},
+		f: {
+			g: {
+				h: {
+					i: 'j'
+					}
+				}
+			},
+		k: 'l',
+		m: {
+			n: {
+				o: {
+					p: 'q',
+					r: 's'
+				}
+			}
+		},
+		t: null,
+		u: 'v',
+		w: {
+			x: 'y',
+			z: {}
+		}
+	};
+
+	transform(target, source);
+
+	const source2 = {
+		a: 'not b',
+		'c.d': 'not e'
+	}
+
+	transform(target, source2);
+
+	inspect(target);
+}());
+
+(function () {
+	const Benchmark = require('Benchmark');
+	const suite = new Benchmark.Suite;
+	 
+	suite.add('set();', function() {
+		user.set(data);
+	});
+
+	suite.add('set2()', function() {
+		user.set2(data);
+	});
+
+	suite.on('cycle', function(event) {
+		console.log(String(event.target));
+	}).on('complete', function() {
+		console.log('Fastest is ' + this.filter('fastest').map('name'));
+	});
+	
+	suite.run({ 'async': true });
+}())
+
 return (function () {
 	//await db.connect();
 
