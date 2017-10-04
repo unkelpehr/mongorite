@@ -83,8 +83,8 @@ const data = {
 return (function () {
 	//await db.connect();
 
-	const col = new UserCollection(db).push({});
-	const doc = col[0];
+	const col = new UserCollection(db);
+	const doc = new UserDocument(col);
 	
 	const obj1 = {
 		k1: 'v1',
@@ -102,9 +102,13 @@ return (function () {
 		}
 	};
 
-	doc.set(obj1)
+	doc.set('foo', 'bar');
+	doc.set({'foo': 'bar'});
 
-	inspect(doc.get.dotted('k1'));
+	doc.set(doc.CONST.SET_WRITE, 'foo', 'bar');
+	doc.set(doc.CONST.SET_MERGE_WRITE, {'foo': 'bar'});
+
+	//inspect(doc.get('k3'));
 
 	//db.disconnect();
 }());

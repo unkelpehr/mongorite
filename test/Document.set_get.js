@@ -150,11 +150,13 @@ test('bulk set/get on object that already has changes', assert => {
 test('set / get using dot notation', assert => {
 	const doc = new Document();
 
-	doc.set(true, 'k1', 'v1');
-	doc.set(true, 'k2', {});
-	doc.set(true, 'k3.l1k1.l2k1', 'l2v1');
-	doc.set(true, 'k4.l1k1.l2k1', 'l2v1');
-	doc.set(true, 'k4.l1k1.l2k2', 'l2v2');
+	const asWritten = doc.CONST.SET_WRITE;
+
+	doc.set(asWritten, 'k1', 'v1');
+	doc.set(asWritten, 'k2', {});
+	doc.set(asWritten, 'k3.l1k1.l2k1', 'l2v1');
+	doc.set(asWritten, 'k4.l1k1.l2k1', 'l2v1');
+	doc.set(asWritten, 'k4.l1k1.l2k2', 'l2v2');
 
 	assert.deepEqual(doc.get(false), {
 		k1: 'v1',
@@ -176,10 +178,12 @@ test('set / get using dot notation', assert => {
 test('set / get using regular objects', assert => {
 	const doc = new Document();
 
-	doc.set(true, 'k1', 'v1');
-	doc.set(true, 'k2', {});
-	doc.set(true, 'k3', {l1k1: {l2k1: 'l2v1'}});
-	doc.set(true, 'k4', {l1k1: {l2k1: 'l2v1', l2k2: 'l2v2'}});
+	const asWritten = doc.CONST.SET_WRITE;
+
+	doc.set(asWritten, 'k1', 'v1');
+	doc.set(asWritten, 'k2', {});
+	doc.set(asWritten, 'k3', {l1k1: {l2k1: 'l2v1'}});
+	doc.set(asWritten, 'k4', {l1k1: {l2k1: 'l2v1', l2k2: 'l2v2'}});
 
 	assert.deepEqual(doc.get(false), {
 		k1: 'v1',
@@ -200,6 +204,8 @@ test('set / get using regular objects', assert => {
 
 test('bulk set / get', assert => {
 	const doc = new Document();
+
+	const asWritten = doc.CONST.SET_WRITE;
 
 	const obj1 = {
 		k1: 'v1',
@@ -234,9 +240,9 @@ test('bulk set / get', assert => {
 		}
 	};
 
-	assert.is(doc.set(/* asWritten */ false, obj1).get(/* includeChanges */ false), null);
+	assert.is(doc.set(obj1).get(/* includeChanges */ false), null);
 
-	assert.deepEqual(doc.set(/* asWritten */ true, obj2).get(false), obj2);
+	assert.deepEqual(doc.set(asWritten, obj2).get(false), obj2);
 });
 
 /*---------------------------------------------*\
