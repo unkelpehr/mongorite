@@ -96,7 +96,7 @@ return (function () {
 
 	doc.set(data);
 
-	inspect(doc.get());
+	inspect(doc);
 }());
 
 return (function () {

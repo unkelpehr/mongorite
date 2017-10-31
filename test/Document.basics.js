@@ -14,9 +14,7 @@ test('prototype methods expectations', assert => {
 		  'refresh',
 		  'save',
 		  'set',
-		  'set2',
-		  'unset',
-		  'CONST'
+		  'unset'
 	].sort();
 
 	assert.deepEqual(expect, Object.getOwnPropertyNames(Document.prototype).sort());

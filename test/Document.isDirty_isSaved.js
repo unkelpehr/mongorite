@@ -29,7 +29,7 @@ test('Document.prototype.isDirty, sync tests', async assert => {
 
 	assert.is(doc.isDirty(), true);
 
-	doc.unset.change('foo');
+	doc.unset('foo');
 
 	assert.is(doc.isDirty(), false);
 
@@ -37,7 +37,7 @@ test('Document.prototype.isDirty, sync tests', async assert => {
 
 	assert.is(doc.isDirty(), true);
 
-	doc.unset.change('foo');
+	doc.unset('foo');
 
 	assert.is(doc.isDirty(), false);
 

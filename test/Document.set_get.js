@@ -1,5 +1,6 @@
 const {test} = require('ava');
 const {Database, Collection, Document} = require('../');
+const {CONST} = require('../lib/common');
 
 test('set / get using dot notation', assert => {
 	const doc = new Document();
@@ -150,7 +151,7 @@ test('bulk set/get on object that already has changes', assert => {
 test('set / get using dot notation', assert => {
 	const doc = new Document();
 
-	const asWritten = doc.CONST.SET_WRITE;
+	const asWritten = CONST.SET_WRITE;
 
 	doc.set(asWritten, 'k1', 'v1');
 	doc.set(asWritten, 'k2', {});
@@ -178,7 +179,7 @@ test('set / get using dot notation', assert => {
 test('set / get using regular objects', assert => {
 	const doc = new Document();
 
-	const asWritten = doc.CONST.SET_WRITE;
+	const asWritten = CONST.SET_WRITE;
 
 	doc.set(asWritten, 'k1', 'v1');
 	doc.set(asWritten, 'k2', {});
@@ -205,7 +206,7 @@ test('set / get using regular objects', assert => {
 test('bulk set / get', assert => {
 	const doc = new Document();
 
-	const asWritten = doc.CONST.SET_WRITE;
+	const asWritten = CONST.SET_WRITE;
 
 	const obj1 = {
 		k1: 'v1',
@@ -246,9 +247,9 @@ test('bulk set / get', assert => {
 });
 
 /*---------------------------------------------*\
-    GET DOTTED
-/*---------------------------------------------
-test('get.dotted()', assert => {
+    GET USING DOTTED
+/*---------------------------------------------*/
+test('get(using.dot.notation)', assert => {
 	const doc = new Document();
 
 	const obj1 = {
@@ -269,41 +270,17 @@ test('get.dotted()', assert => {
 
 	doc.set(obj1)
 
-	assert.deepEqual(doc.get.dotted('k1'), {
-		'k1': 'v1'
-	});
+	assert.deepEqual(doc.get('k1'), 'v1');
+	assert.deepEqual(doc.get('k2'), {});
+	assert.deepEqual(doc.get('k3.l1k1.l2k1'), 'l2v1');
+	assert.deepEqual(doc.get('k4.l1k1.l2k1'), 'l2v1');
+	assert.deepEqual(doc.get('k4.l1k1.l2k2'), 'l2v2');
 
-	assert.deepEqual(doc.get.dotted('k2'), {
-		'k2': {}
-	});
+	assert.deepEqual(doc.get('k3'), obj1.k3);
+	assert.deepEqual(doc.get('k3.l1k1'), obj1.k3.l1k1);
 
-	assert.deepEqual(doc.get.dotted('k3'), {
-		'k3.l1k1.l2k1': 'l2v1'
-	});
+	assert.deepEqual(doc.get('k4'), obj1.k4);
+	assert.deepEqual(doc.get('k4.l1k1'), obj1.k4.l1k1);
 
-	assert.deepEqual(doc.get.dotted('k4'), {
-		'k4.l1k1.l2k1': 'l2v1',
-		'k4.l1k1.l2k2': 'l2v2'
-	});
-
-	assert.deepEqual(doc.get.dotted('k4.l1k1'), {
-		'k4.l1k1.l2k1': 'l2v1',
-		'k4.l1k1.l2k2': 'l2v2'
-	});
-
-	assert.deepEqual(doc.get.dotted('k4.l1k1.l2k1'), {
-		'k4.l1k1.l2k1': 'l2v1',
-	});
-
-	assert.deepEqual(doc.get.dotted('k4.l1k1.l2k2'), {
-		'k4.l1k1.l2k2': 'l2v2'
-	});
-
-	assert.deepEqual(doc.get.dotted(), {
-		k1: 'v1',
-		k2: {},
-		'k3.l1k1.l2k1': 'l2v1',
-		'k4.l1k1.l2k1': 'l2v1',
-		'k4.l1k1.l2k2': 'l2v2' 
-	});
-});*/
+	assert.deepEqual(doc.get(), obj1);
+});
