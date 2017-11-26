@@ -59,7 +59,8 @@ test('prototype methods expectations', assert => {
 		'set',
 		'shift',
 		'slice',
-		'toArray'
+		'toArray',
+		'createDocument'
 	].sort();
 
 	assert.deepEqual(expect, Object.getOwnPropertyNames(Collection.prototype).sort());

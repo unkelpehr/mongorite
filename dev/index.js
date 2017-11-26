@@ -51,6 +51,16 @@ Collection.use(plugins.schemas({
 
 const users = new UserCollection(db);
 const user = new UserDocument(users);
+const user2 = users.createDocument({foo: 'bar'});
+
+(async function () {
+	await db.connect();
+	await user2.save();
+	await db.disconnect();
+}());
+
+
+return;
 const data = {
 	a: 'b',
 	c: {
