@@ -1,3 +1,7 @@
+'use strict';
+
+/* eslint-disable */
+
 const {test} = require('ava');
 const {Database, Collection, Document} = require('../');
 const mquery = require('mquery');
@@ -49,11 +53,13 @@ test('returns matches as a mongorite collection', async assert => {
 
 	assert.truthy(res instanceof TestCollection);
 	assert.is(res.length, 3);
+
+	res.forEach(doc => assert.is(doc.isDirty(), false));
 });
 
 test('returns an empty mongorite collection if there was no matches', async assert => {
 	const col = new TestCollection(db);
-	const res = await col.query.find({di2982jd02wmsks: 'i298kKD9"jojfjdpw291xsfb'});
+	const res = await col.query.find({di2982jd34y24yg02wmsks: 'i298kKD9"jojfj dp w291xsfb'});
 
 	assert.truthy(res instanceof TestCollection);
 	assert.is(res.length, 0);
@@ -70,6 +76,8 @@ test('returns a mongorite Document when using findOne', async assert => {
 	const res = await col.query.findOne({foo2: 'bar2'});
 
 	assert.truthy(res instanceof TestDocument);
+
+	assert.is(res.isDirty(), false);
 });
 
 test('returns null when findOne got no match', async assert => {
