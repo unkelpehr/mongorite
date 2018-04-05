@@ -48,7 +48,7 @@ test('prototype methods expectations', assert => {
 		'filter',
 		'forEach',
 		'get',
-		'inspect',
+		'_inspect',
 		'map',
 		'mongo',
 		'pop',

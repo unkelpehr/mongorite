@@ -3,18 +3,19 @@ const {Database, Collection, Document} = require('../');
 
 test('prototype methods expectations', assert => {
 	const expect = [
-		 '_generateWriteOperation',
-		  '_pullChanges',
-		  'changes',
-		  'constructor',
-		  'get',
-		  'inspect',
-		  'isDirty',
-		  'isSaved',
-		  'refresh',
-		  'save',
-		  'set',
-		  'unset'
+		'id',
+		'_generateWriteOperation',
+		'_pullChanges',
+		'changes',
+		'constructor',
+		'get',
+		'inspect',
+		'isDirty',
+		'isSaved',
+		'refresh',
+		'save',
+		'set',
+		'unset'
 	].sort();
 
 	assert.deepEqual(expect, Object.getOwnPropertyNames(Document.prototype).sort());

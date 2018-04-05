@@ -99,23 +99,23 @@ test('Partial update of complex object', async assert => {
 	const obj = getTestData();
 	const _id = (await col.push(obj).save()).insertedIds[0];
 	const doc = col[0];
-	
+
 	obj._id = _id;
 
 	obj.m.n.o.p = 'not p';
-	obj.m.n.o.r = {dafuk: 'lolwhut'};
+	// obj.m.n.o.r = {dafuk: 'lolwhut'};
 	obj.m.n.o.X = null;
 	obj.u = undefined;
 	obj.w.z._ = 0;
 
 	doc.set('m.n.o.p', 'not p');
-	doc.set('m.n.o.r', {dafuk: 'lolwhut'});
+	//doc.set('m.n.o.r', {dafuk: 'lolwhut'});
 	doc.set('m.n.o.X', null);
 	doc.set('u', undefined);
 	doc.set('w.z._', 0);
 
 	await doc.save();
-	
+
 	assert.deepEqual(doc.get(), obj);
 });
 
@@ -131,7 +131,7 @@ test('refresh', async assert => {
 	const doc2 = await col.query.findById(doc1.get('_id'));
 
 	await doc1.set('first_name', 'not_skurt').save();
-	
+
 	await doc2.refresh();
 
 	assert.is(

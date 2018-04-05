@@ -71,7 +71,7 @@ test('Save complex object', async assert => {
 	const col = new TestCollection(db);
 	const obj = getTestData();
 	const _id = (await col.push(obj).save()).insertedIds[0];
-	
+
 	obj._id = _id;
 
 	assert.deepEqual(col[0].get(), obj);
@@ -82,7 +82,7 @@ test('Partial update of complex object', async assert => {
 	const obj = getTestData();
 	const _id = (await col.push(obj).save()).insertedIds[0];
 	const doc = col[0];
-	
+
 	obj._id = _id;
 
 	obj.m.n.o.p = 'not p';
@@ -98,6 +98,6 @@ test('Partial update of complex object', async assert => {
 	doc.set('w.z._', 0);
 
 	await col.save();
-	
+
 	assert.deepEqual(doc.get(), obj);
 });

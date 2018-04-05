@@ -2,6 +2,8 @@ const {test} = require('ava');
 const {Database, Collection, Document} = require('../');
 const {CONST} = require('../lib/common');
 
+const {flags} = require('dotbox');
+
 test('set / get using dot notation', assert => {
 	const doc = new Document();
 
@@ -151,7 +153,7 @@ test('bulk set/get on object that already has changes', assert => {
 test('set / get using dot notation', assert => {
 	const doc = new Document();
 
-	const asWritten = CONST.SET_WRITE;
+	const asWritten = flags.WRITE;
 
 	doc.set(asWritten, 'k1', 'v1');
 	doc.set(asWritten, 'k2', {});
@@ -179,7 +181,7 @@ test('set / get using dot notation', assert => {
 test('set / get using regular objects', assert => {
 	const doc = new Document();
 
-	const asWritten = CONST.SET_WRITE;
+	const asWritten = flags.WRITE;
 
 	doc.set(asWritten, 'k1', 'v1');
 	doc.set(asWritten, 'k2', {});
@@ -206,7 +208,7 @@ test('set / get using regular objects', assert => {
 test('bulk set / get', assert => {
 	const doc = new Document();
 
-	const asWritten = CONST.SET_WRITE;
+	const asWritten = flags.WRITE;
 
 	const obj1 = {
 		k1: 'v1',

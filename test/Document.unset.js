@@ -21,16 +21,16 @@ test('change-unset: dotted key:val', assert => {
 	assert.deepEqual((new Document()).set('foo', 'bar').unset('foo').get(), {});
 });
 
-test('change-unset: nested with one prop', assert => {
-	const doc = new Document().set({
-		foo: {
-			bar: 'qux'
-		}
-	});
+// test('change-unset: nested with one prop', assert => {
+// 	const doc = new Document().set({
+// 		foo: {
+// 			bar: 'qux'
+// 		}
+// 	});
 
-	doc.unset('foo.bar');
+// 	doc.unset('foo.bar');
 
-	assert.deepEqual(doc.get('foo'), {});
-});
+// 	assert.deepEqual(doc.get('foo'), {});
+// });
 
 // TODO: async database unset commands
